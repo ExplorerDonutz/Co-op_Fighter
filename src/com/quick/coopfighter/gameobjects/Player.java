@@ -7,9 +7,12 @@ import com.quick.coopfighter.ui.HUD;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 public class Player extends GameObject {
     private final Animation upAnim, downAnim, leftAnim, rightAnim;
+
+    private final ArrayList<BufferedImage> upImgs, downImgs, leftImgs, rightImgs;
     Handler handler;
     private BufferedImage lastFrame;
 
@@ -19,21 +22,32 @@ public class Player extends GameObject {
 
         this.handler = handler;
 
+        upImgs = new ArrayList<>();
+        downImgs = new ArrayList<>();
+        leftImgs = new ArrayList<>();
+        rightImgs = new ArrayList<>();
 
         setX(Game.WIDTH / 2 - 16);
         setY(Game.HEIGHT / 2 + 128);
+
+        for (int i = 0; i < 4; i++) {
+            upImgs.add(ResourceLoader.playerSprite.getSprite(i, 0));
+            downImgs.add(ResourceLoader.playerSprite.getSprite(i, 1));
+            rightImgs.add(ResourceLoader.playerSprite.getSprite(i, 2));
+            leftImgs.add(ResourceLoader.playerSprite.getSprite(i, 3));
+        }
 
         upAnim = new Animation();
         downAnim = new Animation();
         leftAnim = new Animation();
         rightAnim = new Animation();
 
-        upAnim.setFrames(ResourceLoader.playerUp);
-        downAnim.setFrames(ResourceLoader.playerDown);
-        leftAnim.setFrames(ResourceLoader.playerLeft);
-        rightAnim.setFrames(ResourceLoader.playerRight);
+        upAnim.setFrames(upImgs);
+        downAnim.setFrames(downImgs);
+        leftAnim.setFrames(leftImgs);
+        rightAnim.setFrames(rightImgs);
 
-        lastFrame = ResourceLoader.playerUp.get(1);
+        lastFrame = upImgs.get(1);
 
         upAnim.setDelay(100);
         downAnim.setDelay(100);
@@ -46,8 +60,8 @@ public class Player extends GameObject {
         y += volY;
 
         // Clamp coordinates inside window
-        x = Game.clamp(x, 0, Game.WIDTH - 32);
-        y = Game.clamp(y, 0, Game.HEIGHT - 32);
+        x = Game.clamp(x, 0, Game.WORLD_WIDTH - 64);
+        y = Game.clamp(y, 0, Game.WORLD_HEIGHT - 64);
 
         collision();
 
@@ -71,7 +85,7 @@ public class Player extends GameObject {
 
     public void render(Graphics2D g) {
         g.setColor(Color.WHITE);
-        g.fillRect(x, y, 32, 32);
+        //g.fillRect(x, y, 64, 64);
 
         animation(g);
     }
@@ -80,22 +94,22 @@ public class Player extends GameObject {
 
         switch (direction) {
             case UP -> {
-                g.drawImage(upAnim.getImage(), x - 16, y - 48, null);
-                lastFrame = ResourceLoader.playerUp.get(1);
+                g.drawImage(upAnim.getImage(), x , y, 64, 64, null);
+                lastFrame = upImgs.get(1);
             }
             case DOWN -> {
-                g.drawImage(downAnim.getImage(), x - 16, y - 48, null);
-                lastFrame = ResourceLoader.playerDown.get(1);
+                g.drawImage(downAnim.getImage(), x, y, 64, 64, null);
+                lastFrame = downImgs.get(1);
             }
             case LEFT -> {
-                g.drawImage(leftAnim.getImage(), x - 16, y - 48, null);
-                lastFrame = ResourceLoader.playerLeft.get(1);
+                g.drawImage(leftAnim.getImage(), x, y, 64, 64, null);
+                lastFrame = leftImgs.get(1);
             }
             case RIGHT -> {
-                g.drawImage(rightAnim.getImage(), x - 16, y - 48, null);
-                lastFrame = ResourceLoader.playerRight.get(1);
+                g.drawImage(rightAnim.getImage(), x, y, 64, 64, null);
+                lastFrame = rightImgs.get(1);
             }
-            case IDLE -> g.drawImage(lastFrame, x - 16, y - 48, null);
+            case IDLE -> g.drawImage(lastFrame, x, y, 64, 64, null);
         }
     }
 

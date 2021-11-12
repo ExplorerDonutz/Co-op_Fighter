@@ -11,20 +11,12 @@ public class ResourceLoader {
 
     // Resources
     public static ArrayList<BufferedImage> bgImages = new ArrayList<>();
-    public static ArrayList<BufferedImage> playerUp = new ArrayList<>();
-    public static ArrayList<BufferedImage> playerDown = new ArrayList<>();
-    public static ArrayList<BufferedImage> playerLeft = new ArrayList<>();
-    public static ArrayList<BufferedImage> playerRight = new ArrayList<>();
-
-    public static ArrayList<BufferedImage> enemyUp = new ArrayList<>();
-    public static ArrayList<BufferedImage> enemyDown = new ArrayList<>();
-    public static ArrayList<BufferedImage> enemyLeft = new ArrayList<>();
-    public static ArrayList<BufferedImage> enemyRight = new ArrayList<>();
+    public static SpriteSheet playerSprite;
+    public static SpriteSheet enemySprite;
 
     public static BufferedImage gameBg;
 
     private int bgNum = 1;
-    private int playerNum = 1;
     public float loadPercent = 0;
 
     public void loadImages() {
@@ -50,25 +42,15 @@ public class ResourceLoader {
 
 
         // Load player animations
-        if (playerNum <= 4) {
-            try {
-                playerUp.add(ImageIO.read(new File("src/resources/gameimages/player/forward (" + playerNum + ").png")));
-                playerDown.add(ImageIO.read(new File("src/resources/gameimages/player/back (" + playerNum + ").png")));
-                playerLeft.add(ImageIO.read(new File("src/resources/gameimages/player/left (" + playerNum + ").png")));
-                playerRight.add(ImageIO.read(new File("src/resources/gameimages/player/right (" + playerNum + ").png")));
+        playerSprite = new SpriteSheet("src/resources/gameimages/player/player.png", 4, 4);
+        enemySprite = new SpriteSheet("src/resources/gameimages/enemy/enemy.png", 4, 4);
 
-                enemyUp.add(ImageIO.read(new File("src/resources/gameimages/enemy/forward (" + playerNum + ").png")));
-                enemyDown.add(ImageIO.read(new File("src/resources/gameimages/enemy/back (" + playerNum + ").png")));
-                enemyLeft.add(ImageIO.read(new File("src/resources/gameimages/enemy/left (" + playerNum + ").png")));
-                enemyRight.add(ImageIO.read(new File("src/resources/gameimages/enemy/right (" + playerNum + ").png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        playerNum++;
         bgNum++;
 
         loadPercent = Math.round((bgNum / 97f) * 100f);
+
+        if (loadPercent > 100) {
+            loadPercent = 100;
+        }
     }
 }

@@ -1,13 +1,10 @@
 package com.quick.coopfighter.screens;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-
 import com.quick.coopfighter.Game;
 import com.quick.coopfighter.handler.ResourceLoader;
 import com.quick.coopfighter.utils.Utils;
+
+import java.awt.*;
 
 public class LoadingScreen extends Screen {
 
@@ -31,7 +28,7 @@ public class LoadingScreen extends Screen {
 
         Utils.drawCenteredString(g, "Loading: " + loader.loadPercent + "%", textRect, textFont);
 
-        g.drawRect(100, 200, (int) (440 * (loader.loadPercent / 100)), 20);
+        g.drawRect(100, 200, (int) ((Game.WIDTH - 200) * (loader.loadPercent / 100)), 20);
     }
 
     @Override

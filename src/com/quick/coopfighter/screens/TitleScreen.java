@@ -37,7 +37,7 @@ public class TitleScreen extends Screen {
 
     @Override
     public void render(Graphics2D g) {
-        g.drawImage(bgImages.get(bgNum), 0, 0, 823, 480, null);
+        g.drawImage(bgImages.get(bgNum), 0, 0, 1024, 597, null);
         Utils.drawCenteredString(g, "Co-op Fighter", titleRect, font);
 
         playButton.render(g);

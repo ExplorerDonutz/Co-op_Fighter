@@ -9,30 +9,29 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
-import java.io.IOException;
 import java.io.Serial;
 
 public class Game extends Canvas implements Runnable {
-    @Serial
-    private static final long serialVersionUID = -3543438401720086416L;
-
     // Screen numbers
     public static final int TITLE = 0;
     public static final int GAME = 1;
     public static final int LOAD = 2;
     public static final int END = 3;
-
-    public static final int WIDTH = 640;
-    public static final int HEIGHT = WIDTH / 12 * 9; //480
-
-    private Thread thread;
-    public volatile boolean running = false;
-
+    // Display Dimensions
+    public static final int WIDTH = 1024;
+    public static final int HEIGHT = WIDTH / 16 * 9;
+    // World Dimensions
+    public static final int WORLD_WIDTH = 2048;
+    public static final int WORLD_HEIGHT = 2048;
+    public static final int VIEWPORT_WIDTH = 800;
+    public static final int VIEWPORT_HEIGHT = 600;
+    @Serial
+    private static final long serialVersionUID = -3543438401720086416L;
     public final ResourceLoader loader;
     public final Handler handler;
-
     private final Window window;
-
+    public volatile boolean running = false;
+    private Thread thread;
     private Screen screen;
 
     private double delta;
@@ -48,6 +47,15 @@ public class Game extends Canvas implements Runnable {
         this.addKeyListener(screen);
         this.addMouseListener(screen);
         this.requestFocus();
+    }
+
+    public static int clamp(int var, int min, int max) {
+        return Math.max(min, Math.min(max, var));
+    }
+
+    public static void main(String[] args) {
+
+        SwingUtilities.invokeLater(Game::new);
     }
 
     public synchronized void start() {
@@ -71,7 +79,7 @@ public class Game extends Canvas implements Runnable {
         double lastTime = System.nanoTime();
         double amountOfTicks = 20.0;
         double ns = 1e9 / amountOfTicks;
-        delta = 1.0/60.0;
+        delta = 1.0 / 60.0;
         long timer = System.currentTimeMillis();
         int frames = 0;
 
@@ -125,10 +133,6 @@ public class Game extends Canvas implements Runnable {
         bs.show();
     }
 
-    public static int clamp(int var, int min, int max) {
-        return Math.max(min, Math.min(max, var));
-    }
-
     public Screen setScreen(int screenNum) {
         switch (screenNum) {
             case TITLE -> {
@@ -165,10 +169,5 @@ public class Game extends Canvas implements Runnable {
 
     public double getDelta() {
         return delta;
-    }
-
-    public static void main(String[] args) {
-
-        SwingUtilities.invokeLater(Game::new);
     }
 }
